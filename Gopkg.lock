@@ -3,86 +3,119 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:4dfaf3cf678fa55e135819a31750bc152819a6a94e9e2afde75ad0c883ad10ac"
   name = "github.com/Flaque/filet"
   packages = ["."]
+  pruneopts = "UT"
   revision = "dbf95344df50497dba92c62da869a873be2968e9"
 
 [[projects]]
+  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
+  pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:33ca3f9c42039adf6e511e0d761422020c90caf63db660f14e98a64d18b14524"
   name = "github.com/dnaeon/go-vcr"
   packages = [
     "cassette",
-    "recorder"
+    "recorder",
   ]
+  pruneopts = "UT"
   revision = "8b144be0744f013a1b44386058f1fcb3ba98177d"
 
 [[projects]]
+  branch = "master"
+  digest = "1:1ece6443493a8a03e9d818b0be758ae9137a05035d906aa21eeda69cb5fd2be6"
+  name = "github.com/dolab/colorize"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "10753a0b4d680dcdc8313119eb75b231d8f61a0b"
+
+[[projects]]
+  digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
+  pruneopts = "UT"
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   version = "v1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:7616dd8d9ddca4d4d8aa0e3793f66015c8c8bf9a3f2387be6be59347f43a75c0"
   name = "github.com/logrusorgru/aurora"
   packages = ["."]
+  pruneopts = "UT"
   revision = "d694e6f975a9109e2b063829d563a7c153c4b53c"
 
 [[projects]]
   branch = "master"
+  digest = "1:d0c95a34e79df79eb96ca870d6b6fc43361d34c9c05495f93a5ad0077f7bbb24"
   name = "github.com/mitchellh/go-ps"
   packages = ["."]
+  pruneopts = "UT"
   revision = "4fdf99ab29366514c69ccccddab5dc58b8d84062"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:2e8a205727a065f79ee17d04ce54b8e5c18268241835843e6799497f445738c8"
   name = "github.com/sahilm/fuzzy"
   packages = ["."]
+  pruneopts = "UT"
   revision = "df93d96a0fd86b97655b90f63c70802b4e793afb"
   version = "v0.0.5"
 
 [[projects]]
+  digest = "1:bd1ae00087d17c5a748660b8e89e1043e1e5479d0fea743352cda2f8dd8c4f84"
   name = "github.com/spf13/afero"
   packages = [
     ".",
-    "mem"
+    "mem",
   ]
+  pruneopts = "UT"
   revision = "787d034dfe70e44075ccc060d346146ef53270ad"
   version = "v1.1.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:006db97e1f5db4d08043b781acd92748af94c5e42a3c59b3ffbe7bc1d955cc33"
   name = "github.com/spf13/cobra"
   packages = ["."]
+  pruneopts = "UT"
   revision = "a114f312e075f65bf30d6d9a1430113f857e543b"
 
 [[projects]]
+  digest = "1:9424f440bba8f7508b69414634aef3b2b3a877e522d8a4624692412805407bb7"
   name = "github.com/spf13/pflag"
   packages = ["."]
+  pruneopts = "UT"
   revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
   version = "v1.0.1"
 
 [[projects]]
+  digest = "1:c40d65817cdd41fac9aa7af8bed56927bb2d6d47e4fea566a74880f5c2b1c41e"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
-    "require"
+    "require",
   ]
+  pruneopts = "UT"
   revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
   version = "v1.2.2"
 
 [[projects]]
+  digest = "1:8029e9743749d4be5bc9f7d42ea1659471767860f0cdc34d37c3111bd308a295"
   name = "golang.org/x/text"
   packages = [
     "internal/gen",
@@ -90,20 +123,34 @@
     "internal/ucd",
     "transform",
     "unicode/cldr",
-    "unicode/norm"
+    "unicode/norm",
   ]
+  pruneopts = "UT"
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
 
 [[projects]]
+  digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
+  pruneopts = "UT"
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ba3056c472a417bc2dfa1d5ac30e15a06572960eb78357c0a3d8221e310923ee"
+  input-imports = [
+    "github.com/Flaque/filet",
+    "github.com/dnaeon/go-vcr/recorder",
+    "github.com/dolab/colorize",
+    "github.com/logrusorgru/aurora",
+    "github.com/mitchellh/go-ps",
+    "github.com/sahilm/fuzzy",
+    "github.com/spf13/cobra",
+    "github.com/stretchr/testify/assert",
+    "github.com/stretchr/testify/require",
+    "gopkg.in/yaml.v2",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
