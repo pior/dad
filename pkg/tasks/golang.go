@@ -2,6 +2,7 @@ package tasks
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/devbuddy/devbuddy/pkg/helpers"
 )
@@ -38,12 +39,21 @@ func (g *golangGoPath) needed(ctx *Context) *actionResult {
 	if ctx.env.Get("GOPATH") == "" {
 		return actionNeeded("GOPATH is not set")
 	}
+
+	if !strings.Contains(ctx.env.Get("PATH"), g.binPath(ctx)) {
+		return actionNeeded(fmt.Sprintf("%s is not in PATH", g.binPath(ctx)))
+	}
+
 	return actionNotNeeded()
 }
 
 func (g *golangGoPath) run(ctx *Context) error {
 	ctx.ui.TaskWarning("The GOPATH environment variable should be set to ~/")
 	return nil
+}
+
+func (g *golangGoPath) binPath(ctx *Context) string {
+	return fmt.Sprintf("%s/bin", ctx.env.Get("GOPATH"))
 }
 
 type golangInstall struct {
