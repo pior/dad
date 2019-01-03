@@ -10,6 +10,7 @@ type genericTaskActionBuilder struct {
 
 	conditions     []*genericTaskActionCondition
 	monitoredFiles []string
+	monitoredTasks []string
 
 	runFunc func(*Context) error
 }
@@ -37,6 +38,12 @@ func (a *genericTaskActionBuilder) OnFileChange(path string) *genericTaskActionB
 	return a
 }
 
+// OnTaskChange specifies that the action will run when a task changes.
+func (a *genericTaskActionBuilder) OnTaskChange(name string) *genericTaskActionBuilder {
+	a.monitoredTasks = append(a.monitoredTasks, name)
+	return a
+}
+
 // Build returns a new task action with the behaviour specified by the builder
 func (a *genericTaskActionBuilder) Build() *genericTaskAction {
 	return &genericTaskAction{
@@ -44,6 +51,7 @@ func (a *genericTaskActionBuilder) Build() *genericTaskAction {
 			desc:           a.desc,
 			conditions:     append(a.conditions[:0:0], a.conditions...),
 			monitoredFiles: append(a.monitoredFiles[:0:0], a.monitoredFiles...),
+			monitoredTasks: append(a.monitoredTasks[:0:0], a.monitoredTasks...),
 			runFunc:        a.runFunc,
 		},
 	}

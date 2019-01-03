@@ -115,3 +115,18 @@ func genericTaskActionPostConditionForFile(ctx *Context, path string) *actionRes
 
 	return actionNotNeeded()
 }
+
+func genericTaskActionPreConditionForTask(ctx *Context, path string) *actionResult {
+	storedChecksum, err := store.New(ctx.proj.Path).GetString("checksum" + path)
+	if err != nil {
+		return actionFailed("failed to read the previous file checksum: %s", err)
+	}
+
+	if fileChecksum != storedChecksum {
+		return actionNeeded("file %s has changed", path)
+	}
+	return actionNotNeeded()
+}
+
+func genericTaskActionPostConditionForTask(ctx *Context, path string) *actionResult {
+}

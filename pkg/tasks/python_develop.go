@@ -33,6 +33,7 @@ func parserPythonDevelop(config *taskConfig, task *Task) error {
 		return nil
 	})
 	builder.OnFileChange("setup.py")
+	builder.OnTaskChange(pythonTaskName)
 
 	task.addAction(builder.Build())
 	return nil
