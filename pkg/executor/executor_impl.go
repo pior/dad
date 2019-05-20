@@ -68,27 +68,6 @@ func (e *executorImpl) AddOutputFilter(substring string) Executor {
 	return e
 }
 
-func (e *executorImpl) printPipe(wg *sync.WaitGroup, pipe io.Reader) {
-	defer wg.Done()
-
-	scanner := bufio.NewScanner(pipe)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if e.shouldSuppressLine(line) {
-			continue
-		}
-		termui.Fprintf(e.outputWriter, "%s%s\n", e.outputPrefix, line)
-	}
-}
-
-func (e *executorImpl) shouldSuppressLine(line string) bool {
-	for _, substring := range e.filterSubstrings {
-		if strings.Contains(line, substring) {
-			return true
-		}
-	}
-	return false
-}
 
 func (e *executorImpl) runWithOutputFilter() error {
 	e.cmd.Stdin = nil // default to /dev/null
@@ -108,11 +87,19 @@ func (e *executorImpl) runWithOutputFilter() error {
 		return err
 	}
 
-	outputWait := new(sync.WaitGroup)
-	outputWait.Add(2)
-	go e.printPipe(outputWait, stdout)
-	go e.printPipe(outputWait, stderr)
-	outputWait.Wait()
+	lineSuppressor := &substringLineSuppressor{e.filterSubstrings}
+
+	wg := &sync.WaitGroup{}
+	wg.Add(2)
+	go func() {
+		printPipe(stdout, e.outputWriter, e.outputPrefix, lineSuppressor)
+		wg.Done()
+	}()
+	go func() {
+		printPipe(stderr, e.outputWriter, e.outputPrefix, lineSuppressor)
+		wg.Done()
+	}()
+	wg.Wait()
 
 	return e.cmd.Wait()
 }
