@@ -3,7 +3,7 @@ env:
 
 up:
   - go:
-      version: 1.13.1
+      version: 1.15.2
       modules: true
   - python: 3.6.5
   - pip: [tests/requirements.txt]
