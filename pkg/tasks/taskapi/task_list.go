@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/devbuddy/devbuddy/pkg/autoenv"
-	"github.com/devbuddy/devbuddy/pkg/context"
 	"github.com/devbuddy/devbuddy/pkg/manifest"
 	"github.com/devbuddy/devbuddy/pkg/project"
 )
@@ -18,15 +17,15 @@ func GetTasksFromProject(proj *project.Project) (taskList []*Task, err error) {
 	}
 
 	if len(manifest.Env) != 0 {
-		task, err = NewTaskFromDefinition("env")
+		task, err = NewTaskFromPayload("env")
 		if err != nil {
 			return nil, err
 		}
 		taskList = append(taskList, task)
 	}
 
-	for _, taskdef := range manifest.Up {
-		task, err = NewTaskFromDefinition(taskdef)
+	for _, payload := range manifest.Up {
+		task, err = NewTaskFromPayload(payload)
 		if err != nil {
 			return nil, err
 		}
@@ -36,31 +35,22 @@ func GetTasksFromProject(proj *project.Project) (taskList []*Task, err error) {
 	return taskList, nil
 }
 
-func NewTaskFromDefinition(definition interface{}) (task *Task, err error) {
-	taskConfig, err := NewTaskConfig(definition)
+func NewTaskFromPayload(payload interface{}) (*Task, error) {
+	taskConfig, err := NewTaskConfig(payload)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("parsing task: %w", err)
 	}
 
-	taskDef := taskDefinitions[taskConfig.name]
-	if taskDef == nil {
-		taskDef = newUnknownTaskDefinition()
-	}
+	taskDef := GetDefinitionOrUnknown(taskConfig.name)
 
-	task = &Task{TaskDefinition: taskDef}
+	task := &Task{TaskDefinition: taskDef}
+
 	err = taskDef.Parser(taskConfig, task)
-	return
-}
-
-func newUnknownTaskDefinition() *TaskDefinition {
-	parser := func(config *TaskConfig, task *Task) error {
-		task.AddActionWithBuilder("", func(ctx *context.Context) error {
-			ctx.UI.TaskWarning(fmt.Sprintf("Unknown task: \"%s\"", config.name))
-			return nil
-		})
-		return nil
+	if err != nil {
+		return nil, fmt.Errorf(`task "%s": %w`, task.Key, err)
 	}
-	return &TaskDefinition{Name: "Unknown", Parser: parser}
+
+	return task, nil
 }
 
 func GetFeaturesFromTasks(tasks []*Task) autoenv.FeatureSet {

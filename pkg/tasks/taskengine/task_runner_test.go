@@ -59,7 +59,7 @@ func TestRunActionFailureOnRun(t *testing.T) {
 
 	taskRunner := &TaskRunnerImpl{ctx: ctx}
 	err := taskRunner.Run(task)
-	require.EqualError(t, err, "The task action failed to run: RunFailed")
+	require.EqualError(t, err, `action "Action X": failed to run: RunFailed`)
 
 	require.Equal(t, 1, action.neededCallCount)
 	require.Equal(t, 1, action.runCallCount)
@@ -74,7 +74,7 @@ func TestRunActionStillNeeded(t *testing.T) {
 
 	taskRunner := &TaskRunnerImpl{ctx: ctx}
 	err := taskRunner.Run(task)
-	require.EqualError(t, err, "The task action did not produce the expected result: some-reason")
+	require.EqualError(t, err, `action "Action X": ran successfully but still need to run: some-reason`)
 
 	require.Equal(t, 2, action.neededCallCount)
 	require.Equal(t, 1, action.runCallCount)
@@ -116,7 +116,7 @@ func TestTaskRunnerWithError(t *testing.T) {
 	taskRunner := &TaskRunnerImpl{ctx: ctx}
 	err := taskRunner.Run(task)
 	require.Error(t, err)
-	require.Contains(t, err.Error(), "The task action (Action 1) failed to detect whether it need to run: CRASH 1")
+	require.EqualError(t, err, `action "Action 1": detecting whether it needs to run: CRASH 1`)
 
 	require.Equal(t, 1, action1.neededCallCount)
 	require.Equal(t, 0, action1.runCallCount)

@@ -98,7 +98,11 @@ func (c *TaskConfig) GetStringProperty(name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return asString(value)
+	str, err := asString(value)
+	if err != nil {
+		return "", fmt.Errorf(`key "%s": %w`, name, err)
+	}
+	return str, nil
 }
 
 // GetStringPropertyDefault expects the payload to be a hash of string, returns the value for the name specified.
@@ -112,7 +116,11 @@ func (c *TaskConfig) GetStringPropertyDefault(name string, defaultValue string) 
 	if err != nil {
 		return "", err
 	}
-	return asString(value)
+	str, err := asString(value)
+	if err != nil {
+		return "", fmt.Errorf(`key "%s": %w`, name, err)
+	}
+	return str, nil
 }
 
 // GetBooleanPropertyDefault expects the payload to be a hash, returns the value as a boolean for the name specified.
@@ -136,7 +144,7 @@ func (c *TaskConfig) getProperty(name string) (interface{}, error) {
 
 	properties, ok := c.payload.(map[interface{}]interface{})
 	if !ok {
-		return "", fmt.Errorf("not a hash: %T (%+v)", c.payload, c.payload)
+		return "", fmt.Errorf("expecting a hash, found a %T (%+v)", c.payload, c.payload)
 	}
 
 	value, present := properties[name]

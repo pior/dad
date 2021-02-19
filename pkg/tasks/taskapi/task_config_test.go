@@ -39,8 +39,7 @@ func TestTaskConfigPropertyInvalid(t *testing.T) {
 	config := &TaskConfig{name: "test", payload: "a string"}
 
 	_, err := config.GetListOfStringsPropertyDefault("key", []string{})
-	require.Error(t, err)
-	require.Equal(t, "not a hash: string (a string)", err.Error())
+	require.EqualError(t, err, "expecting a hash, found a string (a string)")
 }
 
 func TestTaskConfigStringOrStringProperty(t *testing.T) {
@@ -73,35 +72,27 @@ func TestTaskConfigStringProperty(t *testing.T) {
 	require.Equal(t, val, "val")
 
 	val, err = config.GetStringProperty("nope")
-	require.Error(t, err)
-	require.Equal(t, "property \"nope\" not found", err.Error())
+	require.EqualError(t, err, `property "nope" not found`, err.Error())
+	require.Equal(t, "", val)
 }
 
 func TestTaskConfigStringPropertyInvalid(t *testing.T) {
 	config := &TaskConfig{name: "test", payload: 42}
 	_, err := config.GetStringPropertyAllowSingle("key")
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "not a hash")
-	require.Contains(t, err.Error(), "int (42)")
+	require.EqualError(t, err, "expecting a hash, found a int (42)")
 
 	config = &TaskConfig{name: "test", payload: false}
 	_, err = config.GetStringPropertyAllowSingle("key")
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "not a hash")
-	require.Contains(t, err.Error(), "bool (false)")
+	require.EqualError(t, err, `expecting a hash, found a bool (false)`)
 
 	config = &TaskConfig{name: "test", payload: "thisisastring"}
 	_, err = config.GetStringProperty("key1")
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "not a hash")
-	require.Contains(t, err.Error(), "thisisastring")
+	require.EqualError(t, err, `expecting a hash, found a string (thisisastring)`)
 
 	payload := map[interface{}]interface{}{"version": 3.6}
 	config = &TaskConfig{name: "test", payload: payload}
 	_, err = config.GetStringProperty("version")
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "not a string")
-	require.Contains(t, err.Error(), "float64 (3.6)")
+	require.EqualError(t, err, `key "version": expecting a string, found a float64 (3.6)`)
 }
 
 func TestTaskConfigListOfStrings(t *testing.T) {
@@ -125,8 +116,7 @@ func TestTaskConfigListOfStringsInvalidElement(t *testing.T) {
 	config := &TaskConfig{name: "test", payload: []interface{}{"one", 2}}
 
 	_, err := config.GetListOfStrings()
-	require.Error(t, err)
-	require.Equal(t, "not a list of strings: invalid element: type int (2)", err.Error())
+	require.EqualError(t, err, "expecting a list of strings, found an invalid element: type int (2)")
 }
 
 func TestTaskConfigListOfStringsInvalidType(t *testing.T) {
@@ -134,5 +124,5 @@ func TestTaskConfigListOfStringsInvalidType(t *testing.T) {
 
 	_, err := config.GetListOfStrings()
 	require.Error(t, err)
-	require.Equal(t, "not a list of strings: type string (plop)", err.Error())
+	require.Equal(t, "expecting a list of strings, found a string (plop)", err.Error())
 }

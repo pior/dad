@@ -34,6 +34,5 @@ custom:
   meet: custom-command
 `)
 
-	require.Error(t, err, "buildFromDefinition() should have failed")
-	require.Contains(t, err.Error(), "not a string")
+	require.EqualError(t, err, `task "custom": key "met?": expecting a string, found a bool (false)`)
 }
