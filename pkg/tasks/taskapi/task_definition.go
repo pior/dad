@@ -2,6 +2,8 @@ package taskapi
 
 import (
 	"fmt"
+
+	"github.com/devbuddy/devbuddy/pkg/context"
 )
 
 type taskParser func(*TaskConfig, *Task) error
@@ -43,4 +45,23 @@ func (t *TaskDefinition) SetOSRequirement(requirement string) *TaskDefinition {
 	}
 	t.OSRequirement = requirement
 	return t
+}
+
+func GetDefinitionOrUnknown(name string) *TaskDefinition {
+	taskDef := taskDefinitions[name]
+	if taskDef == nil {
+		taskDef = newUnknownTaskDefinition()
+	}
+	return taskDef
+}
+
+func newUnknownTaskDefinition() *TaskDefinition {
+	parser := func(config *TaskConfig, task *Task) error {
+		task.AddActionWithBuilder("", func(ctx *context.Context) error {
+			ctx.UI.TaskWarning(fmt.Sprintf("Unknown task: \"%s\"", config.name))
+			return nil
+		})
+		return nil
+	}
+	return &TaskDefinition{Name: "Unknown", Parser: parser}
 }

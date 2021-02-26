@@ -8,7 +8,7 @@ func asString(value interface{}) (string, error) {
 		return result, nil
 	}
 
-	return "", fmt.Errorf("not a string: %T (%+v)", value, value)
+	return "", fmt.Errorf("expecting a string, found a %T (%+v)", value, value)
 }
 
 func asBool(value interface{}) (bool, error) {
@@ -17,7 +17,7 @@ func asBool(value interface{}) (bool, error) {
 		return result, nil
 	}
 
-	return false, fmt.Errorf("not a boolean: %T (%+v)", value, value)
+	return false, fmt.Errorf("expecting a boolean, found a %T (%+v)", value, value)
 }
 
 func asListOfStrings(value interface{}) ([]string, error) {
@@ -27,7 +27,7 @@ func asListOfStrings(value interface{}) ([]string, error) {
 
 	elements, ok := value.([]interface{})
 	if !ok {
-		return nil, fmt.Errorf("not a list of strings: type %T (%+v)", value, value)
+		return nil, fmt.Errorf("expecting a list of strings, found a %T (%+v)", value, value)
 	}
 
 	listOfStrings := []string{}
@@ -35,7 +35,7 @@ func asListOfStrings(value interface{}) ([]string, error) {
 	for _, element := range elements {
 		str, ok := element.(string)
 		if !ok {
-			return nil, fmt.Errorf("not a list of strings: invalid element: type %T (%+v)", element, element)
+			return nil, fmt.Errorf("expecting a list of strings, found an invalid element: type %T (%+v)", element, element)
 		}
 		listOfStrings = append(listOfStrings, str)
 	}

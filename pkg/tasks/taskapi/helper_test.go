@@ -40,9 +40,9 @@ func TestAsListOfStrings(t *testing.T) {
 func TestAsListOfStringsInvalid(t *testing.T) {
 	_, err := asListOfStrings(nil)
 	require.Error(t, err)
-	require.Equal(t, "not a list of strings: type <nil> (<nil>)", err.Error())
+	require.Equal(t, "expecting a list of strings, found a <nil> (<nil>)", err.Error())
 
 	_, err = asListOfStrings(false)
 	require.Error(t, err)
-	require.Equal(t, "not a list of strings: type bool (false)", err.Error())
+	require.Equal(t, "expecting a list of strings, found a bool (false)", err.Error())
 }
