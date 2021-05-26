@@ -2,6 +2,7 @@ env:
   SOME_VAR: some_value
 
 up:
+  - ruby: 2.6.4
   - go:
       version: '1.16'
       modules: true
